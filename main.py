@@ -11,7 +11,7 @@ numbers_7_9 = ['sept', 'huit', 'neuf']
 
 numbers_10_16 = ['dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize']
 
-numbers_20_60 = ['vingt', 'trente', 'quarante', 'cinquantre', 'soixante']
+numbers_20_60 = ['vingt', 'trente', 'quarante', 'cinquante', 'soixante']
 
 
 def old_Rus():
@@ -91,16 +91,38 @@ def clicked():
                         if counter[i] == numbers_7_9[j]:
                             final += j + 7
         elif counter[i] in numbers_10_16:
-            if len(counter) > 1  and counter[i - 1] in numbers_10_16:
-                ErrorCheck = True
-                Error = "Числа еденичного разряда {} и {} идут друг за другом".format(counter[i], counter[i - 1])
-                break
-            elif len(counter) > 1 and counter[i] == "dix" and counter[i + 1] in numbers_7_9:
-                final += 10
+            if len(counter) > 1:
+                if counter[i - 1] in numbers_10_16:
+                    ErrorCheck = True
+                    Error = "Числа десятичного разряда {} и {} идут друг за другом".format(counter[i - 1], counter[i])
+                    break
+                if counter[i - 1] in numbers_20_60 and counter[i - 1] != 'soixante' and counter[i] != 'dix':
+                    ErrorCheck = True
+                    Error = "Числа десятичного разряда {} и {} идут друг за другом".format(counter[i - 1], counter[i])
+                    break
+            elif len(counter) > 1 and counter[i] == "dix" and len(counter) != 2: # тут херня
+                if counter[i + 1] in numbers_7_9:
+                    final += 10
             else:
                 for j in range(len(numbers_10_16)):
                     if counter[i] == numbers_10_16[j]:
                         final += j + 10
+        elif counter[i] in numbers_20_60:
+            if len(counter) > 1:
+                if counter[i] == 'soixante' and counter[i + 1] == 'dix':
+                    final += 70
+                elif counter[i + 1] in numbers_20_60 or counter[i + 1] in numbers_10_16:
+                    ErrorCheck = True
+                    Error = "Числа десятичного разряда {} и {} идут друг за другом".format(counter[i], counter[i + 1])
+                    break
+            else:
+                for j in range(len(numbers_20_60)):
+                    if counter[i] == numbers_20_60[j]:
+                        if final == 0:
+                            final = (j + 2) * 10
+                        else:
+                            final += (j + 2) * 10
+
         else:
             ErrorCheck = True
             Error = "Встречено неизвестное слово {}".format(counter[i])
