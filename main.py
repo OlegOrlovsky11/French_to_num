@@ -3,9 +3,10 @@ from tkinter.ttk import *
 from tkinter import messagebox
 import collections
 
-numbers_0 = ['zero']
 
-numbers_0_6 = ['un', 'deux', 'trois', 'quatre', 'cinq', 'six']
+numbers_0_6 = ['zero', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six']
+
+numbers_0_1 = ['et un']
 
 numbers_7_9 = ['sept', 'huit', 'neuf']
 
@@ -66,67 +67,90 @@ def clicked():
     ErrorCheck = bool(False)
 
     for i in range(len(counter)):
-        if counter[i] in numbers_0:
-            if len(counter) > 1 and counter[i + 1] in numbers_0_6:
-                ErrorCheck = True
-                Error = "Ноль не может использоваться с другими числами"
-                break
-            else:
-                final = 0
-
-
-        elif counter[i] in numbers_0_6 or counter[i] in numbers_7_9:
-            if (len(counter) > 1 and counter[i - 1] in numbers_0_6) or (
-                    len(counter) > 1 and counter[i - 1] in numbers_7_9):
-                ErrorCheck = True
-                Error = "Числа еденичного разряда {} и {} идут друг за другом".format(counter[i], counter[i - 1])
-                break
-            else:
-                if counter[i] in numbers_0_6:
-                    for j in range(len(numbers_0_6)):
-                        if counter[i] == numbers_0_6[j]:
-                            final += j + 1
-                if counter[i] in numbers_7_9:
-                    for j in range(len(numbers_7_9)):
-                        if counter[i] == numbers_7_9[j]:
-                            final += j + 7
-        elif counter[i] in numbers_10_16:
-            if len(counter) > 1:
-                if counter[i - 1] in numbers_10_16:
-                    ErrorCheck = True
-                    Error = "Числа десятичного разряда {} и {} идут друг за другом".format(counter[i - 1], counter[i])
-                    break
-                if counter[i - 1] in numbers_20_60 and counter[i - 1] != 'soixante' and counter[i] != 'dix':
-                    ErrorCheck = True
-                    Error = "Числа десятичного разряда {} и {} идут друг за другом".format(counter[i - 1], counter[i])
-                    break
-            elif len(counter) > 1 and counter[i] == "dix" and len(counter) != 2: # тут херня
-                if counter[i + 1] in numbers_7_9:
-                    final += 10
-            else:
-                for j in range(len(numbers_10_16)):
-                    if counter[i] == numbers_10_16[j]:
-                        final += j + 10
-        elif counter[i] in numbers_20_60:
-            if len(counter) > 1:
-                if counter[i] == 'soixante' and counter[i + 1] == 'dix':
-                    final += 70
-                elif counter[i + 1] in numbers_20_60 or counter[i + 1] in numbers_10_16:
-                    ErrorCheck = True
-                    Error = "Числа десятичного разряда {} и {} идут друг за другом".format(counter[i], counter[i + 1])
-                    break
-            else:
-                for j in range(len(numbers_20_60)):
-                    if counter[i] == numbers_20_60[j]:
-                        if final == 0:
-                            final = (j + 2) * 10
-                        else:
-                            final += (j + 2) * 10
-
-        else:
+        if counter[i] not in numbers_0_6 and counter[i] not in numbers_7_9 and counter[i] not in numbers_10_16 and \
+                counter[i] not in numbers_20_60:
             ErrorCheck = True
             Error = "Встречено неизвестное слово {}".format(counter[i])
             break
+
+        for j in range(len(numbers_0_6)):
+            if counter[i] == numbers_0_6[j]:
+                if counter[i] == "zero" and len(counter) > 1:
+                    Error = "Zero не может использоваться вместе с другими символами"
+                    ErrorCheck = True
+                    break
+                if i > 0:
+                    if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
+                        Error = "Два числа {} и {} единичного разряда идут друг за другом".format(counter[i - 1],
+                                                                                                  counter[i])
+                        ErrorCheck = True
+                        break
+                for j in range(len(numbers_0_6)):
+                    if counter[i] == numbers_0_6[j]:
+                        final += j
+
+        for j in range(len(numbers_7_9)):
+            if counter[i] == numbers_7_9[j]:
+                if counter[i] == "zero" and len(counter) > 1:
+                    Error = "Zero не может использоваться вместе с другими символами"
+                    ErrorCheck = True
+                    break
+                if i > 0:
+                    if counter[i - 1] in numbers_7_9 or counter[i - 1] in numbers_0_6:
+                        Error = "Два числа {} и {} единичного разряда идут друг за другом".format(counter[i - 1],
+                                                                                                  counter[i])
+                        ErrorCheck = True
+                        break
+
+                for j in range(len(numbers_7_9)):
+                    if counter[i] == numbers_7_9[j]:
+                        final += 7 + j
+
+        for j in range(len(numbers_10_16)):
+            if counter[i] == numbers_10_16[j]:
+                if i > 0:
+                    if counter[i - 1] in numbers_10_16:
+                        Error = "Два слова {} и {} десятичного разряда идут друг за другом".format(counter[i - 1],
+                                                                                                   counter[i])
+                        ErrorCheck = True
+                        break
+                    if counter[i - 1] in numbers_20_60:
+                        Error = "Два слова {} и {} десятичного разряда идут друг за другом".format(counter[i - 1],
+                                                                                                   counter[i])
+                        ErrorCheck = True
+                        break
+                    if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
+                        Error = "Слово11 {} еденичного разряда стоит перед словом {} десятичного разряда".format(
+                            counter[i - 1], counter[i])
+                        ErrorCheck = True
+                        break
+
+                for j in range(len(numbers_10_16)):
+                    if counter[i] == numbers_10_16[j]:
+                        final += 10 + j
+
+        for j in range(len(numbers_20_60)):
+            if counter[i] == numbers_20_60[j]:
+                # if i > 0:
+                #     if counter[i - 1] in numbers_10_16:
+                #         Error = "Два слова {} и {} десятичного разряда идут друг за другом".format(counter[i - 1],
+                #                                                                                    counter[i])
+                #         ErrorCheck = True
+                #         break
+                #     if counter[i - 1] in numbers_20_60:
+                #         Error = "Два слова {} и {} десятичного разряда идут друг за другом".format(counter[i - 1],
+                #                                                                                    counter[i])
+                #         ErrorCheck = True
+                #         break
+                #     if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
+                #         Error = "Слово11 {} еденичного разряда стоит перед словом {} десятичного разряда".format(
+                #             counter[i - 1], counter[i])
+                #         ErrorCheck = True
+                #         break
+
+                for j in range(len(numbers_20_60)):
+                    if counter[i] == numbers_20_60[j]:
+                        final += (j + 2) * 10
 
     if ErrorCheck:
         ent_old_rus_num.delete(0)
