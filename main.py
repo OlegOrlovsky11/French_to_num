@@ -3,6 +3,8 @@ from tkinter.ttk import *
 from tkinter import messagebox
 import collections
 
+numbers_0 = ['zero']
+
 numbers_0_6 = ['un', 'deux', 'trois', 'quatre', 'cinq', 'six']
 
 number_7_10 = []
@@ -65,7 +67,16 @@ def clicked():
         ErrorCheck = bool(False)
 
         for i in range(len(counter)):
-            if counter[i] in numbers_0_6:
+            if counter[i] in numbers_0:
+                if len(counter) > 1 and counter[i + 1] in numbers_0_6:
+                    ErrorCheck = True
+                    Error = "Ноль не может использоваться с другими числами"
+                    break
+                else:
+                    final = 0
+
+
+            elif counter[i] in numbers_0_6:
                 if len(counter) > 1 and counter[i + 1] in numbers_0_6:
                     ErrorCheck = True
                     Error = "Числа еденичного разряда {} и {} идут друг за другом".format(counter[i], counter[i + 1])
