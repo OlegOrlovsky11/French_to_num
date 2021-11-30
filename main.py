@@ -3,9 +3,9 @@ from tkinter.ttk import *
 from tkinter import messagebox
 import collections
 
-number_0_9 = []
+numbers_0_6 = ['un', 'deux', 'trois', 'quatre', 'cinq', 'six']
 
-number_10_19 = []
+number_7_10 = []
 
 number_20_99 = []
 
@@ -55,17 +55,29 @@ def clicked():
         ent_old_rus_num.delete(0, END)
         ent_arab_num.delete(0, END)
         counter = []
+        final = 0
         check = (ent_text_num.get()).split(" ")
         check = list(filter(None, check))
         check_len = len(check)
         for m in range(check_len):
             counter.append(check[m])
         ent_arab_num.delete(0)
-        length_counter = len(counter)
-
         ErrorCheck = bool(False)
-        for i in range(length_counter):
-            print(counter[i])
+
+        for i in range(len(counter)):
+            if counter[i] in numbers_0_6:
+                if len(counter) > 1 and counter[i + 1] in numbers_0_6:
+                    ErrorCheck = True
+                    Error = "Числа еденичного разряда {} и {} идут друг за другом".format(counter[i], counter[i + 1])
+                    break
+                else:
+                    for j in range(len(numbers_0_6)):
+                        if counter[i] == numbers_0_6[j]:
+                            final += j + 1
+            else:
+                ErrorCheck = True
+                Error = "Встречено неизвестное слово {}".format(counter[i])
+                break
 
 
 
@@ -85,6 +97,14 @@ def clicked():
 
 
 
+
+        if ErrorCheck:
+            ent_old_rus_num.delete(0)
+            ent_arab_num.delete(0)
+            ent_errors.insert(0 , Error)
+        if not ErrorCheck:
+            ent_arab_num.insert(0, final)
+            old_Rus()
 
 
     except Exception as err:
@@ -97,7 +117,7 @@ window = Tk()
 
 about = []
 resultat = []
-window.geometry("1920x1024")
+window.geometry("2048x650")
 
 window.title("ConvertToNumFrench")
 
