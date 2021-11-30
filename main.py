@@ -7,9 +7,9 @@ numbers_0 = ['zero']
 
 numbers_0_6 = ['un', 'deux', 'trois', 'quatre', 'cinq', 'six']
 
-number_7_10 = []
+numbers_7_9 = ['sept', 'huit', 'neuf']
 
-number_20_99 = []
+number_10_16 = ['dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize']
 
 number_100_1000 = []
 
@@ -76,15 +76,21 @@ def clicked():
                     final = 0
 
 
-            elif counter[i] in numbers_0_6:
-                if len(counter) > 1 and counter[i + 1] in numbers_0_6:
+            elif counter[i] in numbers_0_6 or counter[i] in numbers_7_9:
+                if (len(counter) > 1 and counter[i + 1] in numbers_0_6) or (len(counter) > 1 and counter[i + 1] in numbers_7_9):
                     ErrorCheck = True
                     Error = "Числа еденичного разряда {} и {} идут друг за другом".format(counter[i], counter[i + 1])
                     break
                 else:
-                    for j in range(len(numbers_0_6)):
-                        if counter[i] == numbers_0_6[j]:
-                            final += j + 1
+                    if counter[i] in numbers_0_6:
+                        for j in range(len(numbers_0_6)):
+                            if counter[i] == numbers_0_6[j]:
+                                final += j + 1
+                    if counter[i] in numbers_7_9:
+                        for j in range(len(numbers_7_9)):
+                            if counter[i] == numbers_7_9[j]:
+                                final += j + 7
+
             else:
                 ErrorCheck = True
                 Error = "Встречено неизвестное слово {}".format(counter[i])
