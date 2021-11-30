@@ -67,7 +67,7 @@ def clicked():
         counter.append(check[m])
     ent_arab_num.delete(0)
     ErrorCheck = bool(False)
-    ertq = 9
+    ertq = 0
 
     for i in range(len(counter)):
         if counter[i] not in numbers_0_6 and counter[i] not in numbers_7_9 and counter[i] not in numbers_10_16 and \
@@ -180,14 +180,33 @@ def clicked():
         for j in range(len(numbers_100)):
             if counter[i] == numbers_100[j]:
                 if len(counter) > 1:
-                    if counter[0] in numbers_0_6 and counter[1] in numbers_100:
+                    if counter[i] in numbers_100:
+                        ertq += 1
+                    if ertq > 1:
+                        Error = "Слово {} и слово {} разряда сотней используются больше одного раза".format(
+                            counter[i], counter[i])
+                        ErrorCheck = True
+                        break
+                    elif len(counter) > 2:
+                        if counter[0] in numbers_10_16 or counter[0] in numbers_20_60:
+                            if counter[2] in numbers_100:
+                                Error = "Перед словом {} разряда сотней стоит число {} десятичного разряда".format(counter[2], counter[0])
+                                ErrorCheck = True
+                                break
+                    elif counter[0] not in numbers_0_6 and counter[0] not in numbers_7_9:
+                        Error = "Перед словом {} разряда сотней стоит число {} десятичного разряда".format(counter[i],
+                                                                                                           counter[
+                                                                                                               i - 1])
+                        ErrorCheck = True
+                        break
+                    elif counter[0] in numbers_0_6 and counter[1] in numbers_100:
                         for j in range(len(numbers_0_6)):
                             if counter[0] == numbers_0_6[j]:
                                 final += j * 100 - j
                     elif counter[0] in numbers_7_9 and counter[1] in numbers_100:
                         for j in range(len(numbers_7_9)):
                             if counter[0] == numbers_7_9[j]:
-                                final += (j + 7) * 100 - j
+                                final += (j + 7) * 100 - (j + 7)
 
 
 
