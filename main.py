@@ -9,9 +9,9 @@ numbers_0_6 = ['un', 'deux', 'trois', 'quatre', 'cinq', 'six']
 
 numbers_7_9 = ['sept', 'huit', 'neuf']
 
-number_10_16 = ['dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize']
+numbers_10_16 = ['dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize']
 
-number_100_1000 = []
+numbers_20_60 = ['vingt', 'trente', 'quarante', 'cinquantre', 'soixante']
 
 
 def old_Rus():
@@ -52,85 +52,74 @@ def old_Rus():
 
 
 def clicked():
-    try:
-        ent_errors.delete(0, END)
-        ent_old_rus_num.delete(0, END)
-        ent_arab_num.delete(0, END)
-        counter = []
-        final = 0
-        check = (ent_text_num.get()).split(" ")
-        check = list(filter(None, check))
-        check_len = len(check)
-        for m in range(check_len):
-            counter.append(check[m])
-        ent_arab_num.delete(0)
-        ErrorCheck = bool(False)
+    ent_errors.delete(0, END)
+    ent_old_rus_num.delete(0, END)
+    ent_arab_num.delete(0, END)
+    counter = []
+    final = 0
+    check = (ent_text_num.get()).split(" ")
+    check = list(filter(None, check))
+    check_len = len(check)
+    for m in range(check_len):
+        counter.append(check[m])
+    ent_arab_num.delete(0)
+    ErrorCheck = bool(False)
 
-        for i in range(len(counter)):
-            if counter[i] in numbers_0:
-                if len(counter) > 1 and counter[i + 1] in numbers_0_6:
-                    ErrorCheck = True
-                    Error = "Ноль не может использоваться с другими числами"
-                    break
-                else:
-                    final = 0
-
-
-            elif counter[i] in numbers_0_6 or counter[i] in numbers_7_9:
-                if (len(counter) > 1 and counter[i + 1] in numbers_0_6) or (len(counter) > 1 and counter[i + 1] in numbers_7_9):
-                    ErrorCheck = True
-                    Error = "Числа еденичного разряда {} и {} идут друг за другом".format(counter[i], counter[i + 1])
-                    break
-                else:
-                    if counter[i] in numbers_0_6:
-                        for j in range(len(numbers_0_6)):
-                            if counter[i] == numbers_0_6[j]:
-                                final += j + 1
-                    if counter[i] in numbers_7_9:
-                        for j in range(len(numbers_7_9)):
-                            if counter[i] == numbers_7_9[j]:
-                                final += j + 7
-
-            else:
+    for i in range(len(counter)):
+        if counter[i] in numbers_0:
+            if len(counter) > 1 and counter[i + 1] in numbers_0_6:
                 ErrorCheck = True
-                Error = "Встречено неизвестное слово {}".format(counter[i])
+                Error = "Ноль не может использоваться с другими числами"
                 break
+            else:
+                final = 0
 
 
+        elif counter[i] in numbers_0_6 or counter[i] in numbers_7_9:
+            if (len(counter) > 1 and counter[i - 1] in numbers_0_6) or (
+                    len(counter) > 1 and counter[i - 1] in numbers_7_9):
+                ErrorCheck = True
+                Error = "Числа еденичного разряда {} и {} идут друг за другом".format(counter[i], counter[i - 1])
+                break
+            else:
+                if counter[i] in numbers_0_6:
+                    for j in range(len(numbers_0_6)):
+                        if counter[i] == numbers_0_6[j]:
+                            final += j + 1
+                if counter[i] in numbers_7_9:
+                    for j in range(len(numbers_7_9)):
+                        if counter[i] == numbers_7_9[j]:
+                            final += j + 7
+        elif counter[i] in numbers_10_16:
+            if len(counter) > 1  and counter[i - 1] in numbers_10_16:
+                ErrorCheck = True
+                Error = "Числа еденичного разряда {} и {} идут друг за другом".format(counter[i], counter[i - 1])
+                break
+            elif len(counter) > 1 and counter[i] == "dix" and counter[i + 1] in numbers_7_9:
+                final += 10
+            else:
+                for j in range(len(numbers_10_16)):
+                    if counter[i] == numbers_10_16[j]:
+                        final += j + 10
+        else:
+            ErrorCheck = True
+            Error = "Встречено неизвестное слово {}".format(counter[i])
+            break
+
+    if ErrorCheck:
+        ent_old_rus_num.delete(0)
+        ent_arab_num.delete(0)
+        ent_errors.insert(0, Error)
+    if not ErrorCheck:
+        ent_arab_num.insert(0, final)
+        old_Rus()
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        if ErrorCheck:
-            ent_old_rus_num.delete(0)
-            ent_arab_num.delete(0)
-            ent_errors.insert(0 , Error)
-        if not ErrorCheck:
-            ent_arab_num.insert(0, final)
-            old_Rus()
-
-
-    except Exception as err:
-        ent_errors.insert(0, "Проверьте корректность ввода, возможно вы пропустили - ")
+# except Exception as err:
+#    ent_errors.insert(0, "Проверьте корректность ввода, возможно вы пропустили - ")
 
 
 window = Tk()
-
-
 
 about = []
 resultat = []
@@ -161,7 +150,7 @@ ent_errors = Entry(master=frm_form, width=95, font=('Times New Roman', 35))
 errors.grid(row=6, column=0, sticky='nwes')
 ent_errors.grid(row=7, column=0, sticky='nwes')
 
-btn = Button(master=frm_form, text="Convert", command=clicked, width = 10)
+btn = Button(master=frm_form, text="Convert", command=clicked, width=10)
 btn.grid(row=8, column=0)
 
 window.mainloop()
