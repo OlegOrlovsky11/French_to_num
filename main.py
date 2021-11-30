@@ -14,6 +14,8 @@ numbers_10_16 = ['dix', 'onze', 'douze', 'treize', 'quatorze', 'quinze', 'seize'
 
 numbers_20_60 = ['vingt', 'trente', 'quarante', 'cinquante', 'soixante']
 
+numbers_100 = ['cent']
+
 
 def old_Rus():
     ent_old_rus_num.delete(0, END)
@@ -65,10 +67,11 @@ def clicked():
         counter.append(check[m])
     ent_arab_num.delete(0)
     ErrorCheck = bool(False)
+    ertq = 9
 
     for i in range(len(counter)):
         if counter[i] not in numbers_0_6 and counter[i] not in numbers_7_9 and counter[i] not in numbers_10_16 and \
-                counter[i] not in numbers_20_60:
+                counter[i] not in numbers_20_60 and counter[i] not in numbers_100:
             ErrorCheck = True
             Error = "Встречено неизвестное слово {}".format(counter[i])
             break
@@ -79,12 +82,14 @@ def clicked():
                     Error = "Zero не может использоваться вместе с другими символами"
                     ErrorCheck = True
                     break
+
                 if i > 0:
                     if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
                         Error = "Два числа {} и {} единичного разряда идут друг за другом".format(counter[i - 1],
                                                                                                   counter[i])
                         ErrorCheck = True
                         break
+
 
                 for j in range(len(numbers_0_6)):
                     if counter[i] == numbers_0_6[j]:
@@ -118,6 +123,9 @@ def clicked():
                     if counter[i - 1] in numbers_20_60:
                         if counter[i - 1] == 'soixante' and counter[i] in numbers_10_16:
                             print("")
+                        elif counter[0] == 'quatre' and len(counter) > 2:
+                            if counter[i - 1] == 'vingt':
+                                print("")
                         else:
                             Error = "Два2 слова {} и {} десятичного разряда идут друг за другом".format(counter[i - 1],
                                                                                                    counter[i])
@@ -130,8 +138,13 @@ def clicked():
                         break
 
                 if len(counter) > 2 and counter[i] == 'dix':
-                    if counter[i - 1] == 'soixante'  and counter[i + 1] in numbers_0_6:
-                        Error = "После soixante десятичного разряда должно стоять число 11-19"
+                    if counter[i - 1] == 'soixante' and (counter[i + 1] in numbers_0_6 or counter[i + 1] in numbers_7_9):
+                        Error = "После {} десятичного разряда должно стоять число 11-19".format(counter[i - 1])
+                        ErrorCheck = True
+                        break
+                if len(counter) > 3 and counter[i] == 'dix' and counter[0] == 'quatre':
+                    if counter[i - 1] == 'vingt' and (counter[i + 1] in numbers_0_6 or counter[i + 1] in numbers_7_9):
+                        Error = "После {} десятичного разряда должно стоять число 11-19".format(counter[i - 1])
                         ErrorCheck = True
                         break
                 for j in range(len(numbers_10_16)):
@@ -163,6 +176,22 @@ def clicked():
                 for j in range(len(numbers_20_60)):
                     if counter[i] == numbers_20_60[j]:
                         final += (j + 2) * 10
+
+        for j in range(len(numbers_100)):
+            if counter[i] == numbers_100[j]:
+                if len(counter) > 1:
+                    if counter[0] in numbers_0_6 and counter[1] in numbers_100:
+                        for j in range(len(numbers_0_6)):
+                            if counter[0] == numbers_0_6[j]:
+                                final += j * 100 - j
+                    elif counter[0] in numbers_7_9 and counter[1] in numbers_100:
+                        for j in range(len(numbers_7_9)):
+                            if counter[0] == numbers_7_9[j]:
+                                final += (j + 7) * 100 - j
+
+
+
+
 
     if ErrorCheck:
         ent_old_rus_num.delete(0)
