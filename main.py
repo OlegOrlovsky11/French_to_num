@@ -257,16 +257,18 @@ def clicked():
                         ErrorCheck = True
                         break
                     if len(counter) - 1 == i:
-                        if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
-                            Error = "Слово {} десятичного разряда стоит после слова {} еденичного разряда".format(
-                                counter[i], counter[i - 1])
+                        if (counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9):
+                            if counter[i - 1] != 'quatre' and counter[i] != 'vingt':
+                                Error = "Слово {} десятичного разряда стоит после слова {} еденичного разряда".format(
+                                    counter[i], counter[i - 1])
+                                ErrorCheck = True
+                                break
+                    if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
+                        if counter[i - 1] != 'quatre' and counter[i] != 'vingt':
+                            Error = "Слово111 {} еденичного разряда стоит перед словам {} десятичного разряда".format(
+                                counter[i - 1], counter[i])
                             ErrorCheck = True
                             break
-                    if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
-                        Error = "Слово {} еденичного разряда стоит перед словом {} десятичного разряда".format(
-                            counter[i - 1], counter[i])
-                        ErrorCheck = True
-                        break
 
                 # if (len(counter) - 1 - i) == 2:
                 #     if counter[i + 1] in numbers_0_1 and (
