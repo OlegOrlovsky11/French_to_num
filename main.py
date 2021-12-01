@@ -5,7 +5,7 @@ import collections
 
 numbers_0_6 = ['zero', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six']
 
-numbers_0_1 = ['et un']
+numbers_0_1 = ['et']
 
 numbers_7_9 = ['sept', 'huit', 'neuf']
 
@@ -59,6 +59,7 @@ def clicked():
     ent_arab_num.delete(0, END)
     counter = []
     final = 0
+    k = 0
     check = (ent_text_num.get()).split(" ")
     check = list(filter(None, check))
     check_len = len(check)
@@ -70,10 +71,11 @@ def clicked():
 
     for i in range(len(counter)):
         if counter[i] not in numbers_0_6 and counter[i] not in numbers_7_9 and counter[i] not in numbers_10_16 and \
-                counter[i] not in numbers_20_60 and counter[i] not in numbers_100:
+                counter[i] not in numbers_20_60 and counter[i] not in numbers_100 and counter[i] not in numbers_0_1:
             ErrorCheck = True
             Error = "Встречено неизвестное слово {}".format(counter[i])
             break
+
 
         for j in range(len(numbers_0_6)):
             if counter[i] == numbers_0_6[j]:
@@ -88,6 +90,52 @@ def clicked():
                                                                                                    counter[i])
                         ErrorCheck = True
                         break
+                    if counter[i] == 'un' and counter[i - 1] in numbers_20_60:
+                        if i > 1:
+                            if counter[i] == 'un' and counter[i - 1] == 'vingt' and counter[i - 2] == 'quatre':
+                                print("da")
+                        else:
+                            Error = "un может использоваться только самостоятельно либо с разрядом сотней"
+                            ErrorCheck = True
+                            break
+                    if i > 2:
+                        if counter[i] == 'un' and counter[i - 1] == 'et' and counter[i - 2] == 'vingt' and counter[i - 3] == 'quatre':
+                            Error = "et un может использоваться только числами 20-70"
+                            ErrorCheck = True
+                            break
+
+                if len(counter) == 2:
+                    if counter[i - 1] in numbers_0_1 and counter[i] == 'un':
+                        Error = "Et un может использоваться только с числами 20-60"
+                        ErrorCheck = True
+                        break
+
+
+
+                # if not ((i == 0 and counter[i] == 'un') or (i > 0 and counter[i - 1] in numbers_100)):
+                #     if i > 1 and counter[i] == 'un' and counter[i - 1] in numbers_0_1 and counter[i - 2] in numbers_20_60:
+                #         print('')
+                #         k += 1
+                #     if i > 1 and counter[i] == 'un' and counter[i - 1] == 'vingt' and counter[i - 2] == 'quatre':
+                #         print('Прикол')
+                #     if not(i > 1 and counter[i] == 'un' and counter[i - 1] == 'vingt' and counter[i - 2] == 'quatre'):
+                #         print("Че")
+                #         Error = "Un может использоваться либо самостоятельно либо с разрядом сотней"
+                #         ErrorCheck = True
+                #         break
+
+                # if i == 0 and counter[i] == 'un':
+                #     print('')
+                # if i > 0:
+                #     if  counter[i] == 'un' and counter[i - 1] not in numbers_100:
+                #         print('')
+                # else:
+                #     Error = "Un может использоваться либо самостоятельно либо с разрядом сотней"
+                #     ErrorCheck = True
+                #     break
+                # if i > 0:
+                #     if counter[i] == 'un' and counter[i - 1] not in numbers_100):
+                #         print('daa')
 
                 for j in range(len(numbers_0_6)):
                     if counter[i] == numbers_0_6[j]:
@@ -199,6 +247,8 @@ def clicked():
                     for j in range(len(numbers_7_9)):
                         if counter[0] == numbers_7_9[j]:
                             final += (j + 7) * 100 - (j + 7)
+                if counter[0] in numbers_100:
+                    final += 100
 
     if ErrorCheck:
         ent_old_rus_num.delete(0)
