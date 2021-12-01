@@ -67,7 +67,6 @@ def clicked():
         counter.append(check[m])
     ent_arab_num.delete(0)
     ErrorCheck = bool(False)
-    ertq = 0
 
     for i in range(len(counter)):
         if counter[i] not in numbers_0_6 and counter[i] not in numbers_7_9 and counter[i] not in numbers_10_16 and \
@@ -75,6 +74,28 @@ def clicked():
             ErrorCheck = True
             Error = "Встречено неизвестное слово {}".format(counter[i])
             break
+
+        if counter[0] == 'et':
+            Error = "Частица et не стоять на первом месте"
+            ErrorCheck = True
+            break
+
+        for j in range(len(numbers_0_1)):
+            if counter[i] == numbers_0_1[j]:
+                if i == len(counter) - 1:
+                    Error = "Частица et не может использоваться самостоятельно"
+                    ErrorCheck = True
+                    break
+                if (len(counter) - 1 - i) == 1:
+                    if counter[i + 1] != 'un' and counter[i + 1] != 'onze':
+                        Error = "Частица et может использоваться с словом {} только вмесет с un".format(counter[i - 1])
+                        ErrorCheck = True
+                        break
+                    if counter[i + 1] == 'onze' and counter[i - 1] != 'soixante':
+                        Error = "Частица et может использоваться с словом {} только вмесет с un".format(counter[i - 1])
+                        ErrorCheck = True
+                        break
+
 
 
         for j in range(len(numbers_0_6)):
@@ -95,22 +116,22 @@ def clicked():
                             if counter[i] == 'un' and counter[i - 1] == 'vingt' and counter[i - 2] == 'quatre':
                                 print("da")
                         else:
-                            Error = "un может использоваться только самостоятельно либо с разрядом сотней"
+                            #Error = "un может использоваться только самостоятельно либо с разрядом сотней (проверьте наличие et перед un)"
+                            Error = "Вы пропустили et перед un"
                             ErrorCheck = True
                             break
                     if i > 2:
-                        if counter[i] == 'un' and counter[i - 1] == 'et' and counter[i - 2] == 'vingt' and counter[i - 3] == 'quatre':
+                        if counter[i] == 'un' and counter[i - 1] == 'et' and counter[i - 2] == 'vingt' and counter[
+                            i - 3] == 'quatre':
                             Error = "et un может использоваться только числами 20-70"
                             ErrorCheck = True
                             break
 
                 if len(counter) == 2:
                     if counter[i - 1] in numbers_0_1 and counter[i] == 'un':
-                        Error = "Et un может использоваться только с числами 20-60"
+                        Error = "et un может использоваться только с числами 20-60"
                         ErrorCheck = True
                         break
-
-
 
                 # if not ((i == 0 and counter[i] == 'un') or (i > 0 and counter[i - 1] in numbers_100)):
                 #     if i > 1 and counter[i] == 'un' and counter[i - 1] in numbers_0_1 and counter[i - 2] in numbers_20_60:
@@ -183,6 +204,11 @@ def clicked():
                         ErrorCheck = True
                         break
 
+                    if counter[i] == 'onze' and counter[i - 1] == 'soixante':
+                        Error = "Вы пропустили et перед {}".format(counter[i])
+                        ErrorCheck = True
+                        break
+
                 if len(counter) > 2 and counter[i] == 'dix':
                     if counter[i - 1] == 'soixante' and (
                             counter[i + 1] in numbers_0_6 or counter[i + 1] in numbers_7_9):
@@ -194,9 +220,20 @@ def clicked():
                         Error = "После8 {} десятичного разряда должно стоять число 11-19".format(counter[i - 1])
                         ErrorCheck = True
                         break
+
+                # if len(counter) - 1 - i == 2:
+                #     print('dass')
+                #     if counter[i + 1] in numbers_0_1 and (counter[i + 2] in numbers_10_16 or counter[i + 2] in numbers_20_60):
+                #         Error = "После слова {} может идти только слово un".format(counter[i + 1])
+                #         ErrorCheck = True
+                #         break
+
                 for j in range(len(numbers_10_16)):
                     if counter[i] == numbers_10_16[j]:
                         final += 10 + j
+
+                # print('len counter', len(counter))
+                # print('i = ', i)
 
         for j in range(len(numbers_20_60)):
             if counter[i] == numbers_20_60[j]:
@@ -214,11 +251,18 @@ def clicked():
                     if counter[i - 1] in numbers_0_6 or numbers_7_9:
                         if counter[i - 1] == 'quatre' and counter[i] == 'vingt':
                             final += 56
-                        else:
-                            Error = "Слово11 {} еденичного разряда стоит перед словом {} десятичного разряда".format(
-                                counter[i - 1], counter[i])
-                            ErrorCheck = True
-                            break
+                    else:
+                        Error = "Слово11 {} еденичного разряда стоит перед словом {} десятичного разряда".format(
+                            counter[i - 1], counter[i])
+                        ErrorCheck = True
+                        break
+
+                # if (len(counter) - 1 - i) == 2:
+                #     if counter[i + 1] in numbers_0_1 and (
+                #             counter[i + 2] in numbers_10_16 or counter[i + 2] in numbers_20_60):
+                #         Error = "После слова {} может идти только слово un".format(counter[i + 1])
+                #         ErrorCheck = True
+                #         break
 
                 for j in range(len(numbers_20_60)):
                     if counter[i] == numbers_20_60[j]:
