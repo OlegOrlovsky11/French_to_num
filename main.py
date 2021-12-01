@@ -256,6 +256,17 @@ def clicked():
                             counter[i - 1], counter[i])
                         ErrorCheck = True
                         break
+                    if len(counter) - 1 == i:
+                        if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
+                            Error = "Слово {} десятичного разряда стоит после слова {} еденичного разряда".format(
+                                counter[i], counter[i - 1])
+                            ErrorCheck = True
+                            break
+                    if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
+                        Error = "Слово {} еденичного разряда стоит перед словом {} десятичного разряда".format(
+                            counter[i - 1], counter[i])
+                        ErrorCheck = True
+                        break
 
                 # if (len(counter) - 1 - i) == 2:
                 #     if counter[i + 1] in numbers_0_1 and (
@@ -270,6 +281,12 @@ def clicked():
 
         for j in range(len(numbers_100)):
             if counter[i] == numbers_100[j]:
+                if counter[i] in numbers_100:
+                    k += 1
+                if k > 1:
+                    Error = "Слово cent разряда сотней используется больше одного раза"
+                    ErrorCheck = True
+                    break
                 if i > 0:
                     if counter[i - 1] in numbers_10_16 or counter[i - 1] in numbers_20_60:
                         Error = "Слово {} десятичного разряда стоит перед словом {} разряда сотней".format(
