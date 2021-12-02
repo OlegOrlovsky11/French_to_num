@@ -214,8 +214,11 @@ def clicked():
                         elif counter[0] == 'quatre' and len(counter) > 2:
                             if counter[i - 1] == 'vingts':
                                 print("")
+                        elif i > 1:
+                            if counter[i] == 'dix' and counter[i - 1] == 'vingt' and counter[i - 2] == 'quatre':
+                                print('')
                         else:
-                            Error = "Два слова {} и {} десятичного разряда идут друг за другом".format(counter[i - 1],
+                            Error = "Два111 слова {} и {} десятичного разряда идут друг за другом".format(counter[i - 1],
                                                                                                         counter[i])
                             ErrorCheck = True
                             break
@@ -232,8 +235,8 @@ def clicked():
 
                 if len(counter) > 2 and counter[i] == 'dix' and (i+1 != len(counter)):
                     if counter[i - 1] == 'soixante' and (
-                            counter[i + 1] in numbers_0_6 or counter[i + 1] in numbers_7_9):
-                        Error = "Послеrr {} десятичного разряда должно стоять число 11-19".format(counter[i - 1])
+                            counter[i + 1] in numbers_0_6):
+                        Error = "Послеrr {} десятичного разряда должно стоять число 11-16".format(counter[i - 1])
                         ErrorCheck = True
                         break
                 #ЗАКММЕНТИЛ МБ ВАЖНЫЙ БРЕД
@@ -274,7 +277,17 @@ def clicked():
                         if i + 1 != len(counter):
                             if counter[i - 1] == 'quatre' and counter[i] == 'vingt' and (counter[i + 1] in numbers_0_6 or counter[i + 1] in numbers_7_9 or counter[i + 1] in numbers_10_16):
                                 final += 56
-
+                        if i+1 == len(counter):
+                            if counter[i] == 'vingt' and counter[i - 1] == 'quatre':
+                                Error = "Возможно вы пропусти s в слове {}".format(counter[i])
+                                ErrorCheck = True
+                                break
+                        if i + 1 == len(counter):
+                            if counter[i] == 'vingt' and (counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9):
+                                Error = "Слово {} еденичного разряда стоит перед словом {} десятичного разряда".format(
+                                    counter[i - 1], counter[i])
+                                ErrorCheck = True
+                                break
                     elif counter[i] != 'vingts' or counter[i] != 'vingt':
                         if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
                             Error = "Слово {}че еденичного разряда стоит перед словом {} десятичного разряда".format(
@@ -348,6 +361,15 @@ def clicked():
                     if counter[0] in numbers_10_16 or counter[0] in numbers_20_60:
                         Error = "Слово {} десятичного разряда не может стоять раньше слова {} разряда сотней".format(
                             counter[0], counter[i])
+                        ErrorCheck = True
+                        break
+                if i > 2:
+                    if counter[i - 2] in numbers_0_6 or counter[i - 2] in numbers_7_9:
+                        Error = "Слово {} разряда едениц стоит перед словом {} разрядка сотен".format(counter[i - 2], counter[i])
+                        ErrorCheck = True
+                        break
+                    elif counter[i - 2] in numbers_10_16 or counter[i - 2] in numbers_20_60:
+                        Error = "Слово {} разряда десятков стоит перед словом {} разрядка сотен".format(counter[i - 2], counter[i])
                         ErrorCheck = True
                         break
 
