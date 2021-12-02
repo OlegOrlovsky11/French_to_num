@@ -83,6 +83,16 @@ def clicked():
             Error = "Частица et не стоять на первом месте"
             ErrorCheck = True
             break
+        if counter[i] == 'et' and i > 0:
+            if counter[i - 1] == 'un':
+                Error = "Возможно использование только et un, но не un et"
+                ErrorCheck = True
+                break
+            if len(counter) - 1 > i:
+                if counter[i + 1] != 'un':
+                    Error = "Частица et может использоваться только с un"
+                    ErrorCheck = True
+                    break
 
         for j in range(len(numbers_0_1)):
             if counter[i] == numbers_0_1[j]:
@@ -144,11 +154,12 @@ def clicked():
                             ErrorCheck = True
                             break
 
-                    if i > 0:
-                        if counter[i] == 'un' and counter[i - 1] in numbers_20_60:
+                    if i > 1:
+                        if counter[i] == 'un' and counter[i - 1] in numbers_20_60 and counter[i - 2] != 'quatre':
                             Error = "Вы пропустили et перед un"
                             ErrorCheck = True
                             break
+
 
                 if len(counter) == 2:
                     if counter[i - 1] in numbers_0_1 and counter[i] == 'un':
@@ -228,6 +239,13 @@ def clicked():
                                                                                                         counter[i])
                             ErrorCheck = True
                             break
+                        if i > 1:
+                            if len(counter) - i > 1:
+                                if counter[i - 1] == 'vingt' and counter[i - 2] == 'quatre' and counter[i + 1] in numbers_0_6:
+                                    Error = "После слова {} могут использоваться только слова 7-9".format(counter[i])
+                                    ErrorCheck = True
+                                    break
+
                     if len(counter) == i + 1:                                                                       #Это если последнее слово дес разряда а перед ним число 0-9
                         if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
                             Error = "Слово {} десятичного разряда стоит после слова {} еденичного разряда".format(
@@ -248,7 +266,8 @@ def clicked():
                 if len(counter) > 2 and counter[i] == 'dix' and (i+1 != len(counter)):
                     if counter[i - 1] == 'soixante' and (
                             counter[i + 1] in numbers_0_6):
-                        Error = "Послеrr {} десятичного разряда должно стоять число 11-16".format(counter[i - 1])
+                        Error = "После слова {} могут использоваться только слова 7-9".format(counter[i])
+                        #Error = "Послеrr {} десятичного разряда должно стоять число 11-16".format(counter[i - 1])
                         ErrorCheck = True
                         break
                 #ЗАКММЕНТИЛ МБ ВАЖНЫЙ БРЕД
@@ -281,6 +300,11 @@ def clicked():
                                 counter[i - 1], counter[i])
                             ErrorCheck = True
                             break
+                        if i > 1:
+                            if counter[i - 1] == 'quatre' and (counter[i - 2] in numbers_10_16 or counter[i - 2] in numbers_20_60):
+                                Error = "Слово {} десятичного разряда идет перед словом {} еденичного разряда".format(counter[i - 2], counter[i - 1])
+                                ErrorCheck = True
+                                break
                         if i + 1 != len(counter):
                             if counter[i] == 'vingts' and (counter[i + 1] in numbers_0_6 or numbers_7_9):
                                 Error = "Слово {} не может использоваться с другими числительными кроме {}".format(counter[i], counter[i - 1])
@@ -365,14 +389,19 @@ def clicked():
                     break
                 if i > 0:
                     if counter[i - 1] in numbers_10_16 or counter[i - 1] in numbers_20_60:
-                        Error = "Слово {} десятичного разряда стоит перед словом {} разряда сотней".format(
+                        Error = "Словоq {} десятичного разряда стоит перед словом {} разряда сотней".format(
                             counter[i - 1], counter[i])
                         ErrorCheck = True
                         break
                 if i > 1:
                     if counter[0] in numbers_10_16 or counter[0] in numbers_20_60:
-                        Error = "Слово {} десятичного разряда не может стоять раньше слова {} разряда сотней".format(
+                        Error = "Словоqq {} десятичного разряда не может стоять раньше слова {} разряда сотней".format(
                             counter[0], counter[i])
+                        ErrorCheck = True
+                        break
+                if i > 2:
+                    if counter[i - 1] == 'un' and counter[i - 2] =='et' and (counter[i - 3] in numbers_0_6 or counter[i - 3] in numbers_7_9):
+                        Error = "Частица et не может использоваться со словом {} разряда едениц".format(counter[i - 3])
                         ErrorCheck = True
                         break
                 if i > 2:
@@ -384,7 +413,11 @@ def clicked():
                         Error = "Слово {} разряда десятков стоит перед словом {} разрядка сотен".format(counter[i - 2], counter[i])
                         ErrorCheck = True
                         break
-
+                if len(counter) - i > 2:
+                    if counter[i + 1] == 'et' and counter[i + 2] == 'un':
+                        Error = "Слово {} разряда сотней может использоваться только с un".format(counter[i])
+                        ErrorCheck = True
+                        break
                 if counter[0] in numbers_0_6 and counter[1] in numbers_100:
                     for j in range(len(numbers_0_6)):
                         if counter[0] == numbers_0_6[j]:
