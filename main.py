@@ -138,9 +138,15 @@ def clicked():
                             ErrorCheck = True
                             break
                     if i > 2:
-                        if counter[i] == 'un' and counter[i - 1] == 'et' and counter[i - 2] == 'vingt' and counter[
-                            i - 3] == 'quatre':
+                        if counter[i] == 'un' and counter[i - 1] == 'et' and counter[i - 2] == 'vingt' \
+                                and counter[i - 3] == 'quatre':
                             Error = "et un может использоваться только числами 20-70"
+                            ErrorCheck = True
+                            break
+
+                    if i > 0:
+                        if counter[i] == 'un' and counter[i - 1] in numbers_20_60:
+                            Error = "Вы пропустили et перед un"
                             ErrorCheck = True
                             break
 
@@ -220,6 +226,12 @@ def clicked():
                         else:
                             Error = "Два111 слова {} и {} десятичного разряда идут друг за другом".format(counter[i - 1],
                                                                                                         counter[i])
+                            ErrorCheck = True
+                            break
+                    if len(counter) == i + 1:                                                                       #Это если последнее слово дес разряда а перед ним число 0-9
+                        if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
+                            Error = "Слово {} десятичного разряда стоит после слова {} еденичного разряда".format(
+                                counter[i], counter[i - 1])
                             ErrorCheck = True
                             break
                     if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
