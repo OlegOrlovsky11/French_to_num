@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter.ttk import *
-from tkinter import messagebox
-import collections
+import string
 
 numbers_0_6 = ['zero', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six']
 
@@ -64,7 +63,7 @@ def clicked():
     counter = []
     final = 0
     k = 0
-    check = (ent_text_num.get()).split(" ")
+    check = (ent_text_num.get().lower()).split(" ")
     check = list(filter(None, check))
     check_len = len(check)
     for m in range(check_len):
@@ -143,7 +142,6 @@ def clicked():
                             if counter[i] == 'un' and counter[i - 1] == 'vingt' and counter[i - 2] == 'quatre':
                                 print('')
                         else:
-                            #Error = "un может использоваться только самостоятельно либо с разрядом сотней (проверьте наличие et перед un)"
                             Error = "Вы пропустили et перед un"
                             ErrorCheck = True
                             break
@@ -215,6 +213,15 @@ def clicked():
                             ErrorCheck = True
                             break
                         if i > 1:
+                            if counter[i] == 'dix' and counter[i - 1] in numbers_20_60:
+                                if counter[i - 1] == 'soixante':
+                                    print('')
+                                elif counter[i - 1] == 'vingt' and counter[i - 2] == 'quatre':
+                                    print('')
+                                else:
+                                    Error = "Два слова {} и {} десятичного разряда идут друг за другом".format(counter[i - 1], counter[i])
+                                    ErrorCheck = True
+                                    break
                             if len(counter) - i > 1:
                                 if counter[i - 1] == 'vingt' and counter[i - 2] == 'quatre' and counter[i + 1] in numbers_0_6:
                                     Error = "После слова {} могут использоваться только слова 7-9".format(counter[i])
@@ -268,7 +275,7 @@ def clicked():
                                 break
                         if i + 1 != len(counter):
                             if counter[i] == 'vingts' and (counter[i + 1] in numbers_0_6 or numbers_7_9):
-                                Error = "Слово {} не может использоваться с другими числительными кроме {}".format(counter[i], counter[i - 1])
+                                Error = "Слово {} не может использоваться с другими числительными кроме quatre".format(counter[i])
                                 ErrorCheck = True
                                 break
                         if i + 1 != len(counter):
@@ -389,10 +396,6 @@ def clicked():
     if not ErrorCheck:
         ent_arab_num.insert(0, final)
         old_Rus()
-
-
-# except Exception as err:
-#    ent_errors.insert(0, "Проверьте корректность ввода, возможно вы пропустили - ")
 
 
 window = Tk()
