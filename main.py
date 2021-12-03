@@ -1,6 +1,5 @@
 from tkinter import *
 from tkinter.ttk import *
-import string
 
 numbers_0_6 = ['zero', 'un', 'deux', 'trois', 'quatre', 'cinq', 'six']
 
@@ -218,6 +217,20 @@ def clicked():
                                     print('')
                                 elif counter[i - 1] == 'vingt' and counter[i - 2] == 'quatre':
                                     print('')
+                                    #Этот elif добавил недавно для обработки quatre vingt dix при постановке ед разряда перед vingt
+                                elif i > 2:
+                                    if counter[i] == 'dix' and counter[i - 1] == 'vingt':
+                                        if counter[i - 3] == 'quatre':
+                                            if counter[i - 2] in numbers_0_6 or counter[i - 2] in numbers_7_9:
+                                                Error = "Слово {} еденичного разряда стоит перед словом {} десятичного разряда".format(
+                                                    counter[i - 2], counter[i - 1])
+                                                ErrorCheck = True
+                                                break
+                                            elif counter[i - 2] in numbers_10_16 or counter[i - 2] in numbers_20_60:
+                                                Error = "Два слова {} и {} десятичного разряда идут друг за другом".format(
+                                                    counter[i - 1], counter[i - 1])
+                                                ErrorCheck = True
+                                                break
                                 else:
                                     Error = "Два слова {} и {} десятичного разряда идут друг за другом".format(counter[i - 1], counter[i])
                                     ErrorCheck = True
@@ -292,6 +305,7 @@ def clicked():
                                     counter[i - 1], counter[i])
                                 ErrorCheck = True
                                 break
+
                     elif counter[i] != 'vingts' or counter[i] != 'vingt':
                         if counter[i - 1] in numbers_0_6 or counter[i - 1] in numbers_7_9:
                             Error = "Слово {} еденичного разряда стоит перед словом {} десятичного разряда".format(
@@ -299,7 +313,7 @@ def clicked():
                             ErrorCheck = True
                             break
                     if counter[i - 1] in numbers_20_60:
-                        Error = "Два слова {} и {} десятичного разряда идут друг за другом".format(counter[i - 1],
+                        Error = "Два слова1 {} и {} десятичного разряда идут друг за другом".format(counter[i - 1],
                                                                                                     counter[i])
                         ErrorCheck = True
                         break
@@ -365,11 +379,11 @@ def clicked():
                         ErrorCheck = True
                         break
                 if i > 2:
-                    if counter[i - 2] in numbers_0_6 or counter[i - 2] in numbers_7_9:
-                        Error = "Слово {} разряда едениц стоит перед словом {} разрядка сотен".format(counter[i - 2], counter[i])
-                        ErrorCheck = True
-                        break
-                    elif counter[i - 2] in numbers_10_16 or counter[i - 2] in numbers_20_60:
+                    # if counter[i - 2] in numbers_0_6 or counter[i - 2] in numbers_7_9:
+                    #     Error = "Слово {} разряда едениц стоит перед словом {} разрядка сотен".format(counter[i - 2], counter[i])
+                    #     ErrorCheck = True
+                    #     break
+                    if counter[i - 2] in numbers_10_16 or counter[i - 2] in numbers_20_60:
                         Error = "Слово {} разряда десятков стоит перед словом {} разрядка сотен".format(counter[i - 2], counter[i])
                         ErrorCheck = True
                         break
