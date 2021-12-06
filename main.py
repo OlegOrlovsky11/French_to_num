@@ -407,6 +407,7 @@ def clicked():
                     #     Error = "Слово {} разряда едениц стоит перед словом {} разрядка сотен".format(counter[i - 2], counter[i])
                     #     ErrorCheck = True
                     #     break
+
                     if counter[i - 2] in numbers_10_16 or counter[i - 2] in numbers_20_60:
                         Error = "Слово {} разряда десятков стоит перед словом {} разрядка сотен".format(counter[i - 2], counter[i])
                         ErrorCheck = True
