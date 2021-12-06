@@ -86,6 +86,11 @@ def clicked():
                 ErrorCheck = True
                 break
 
+        if counter[i] == 'zero' and i > 0:
+            Error = "Zero не может использоваться вместе с другими символами"
+            ErrorCheck = True
+            break
+
         if counter[0] == 'et':
             Error = "Частица et не стоять на первом месте"
             ErrorCheck = True
@@ -311,7 +316,7 @@ def clicked():
                                 break
                         if i + 1 != len(counter):
                             if counter[i] == 'vingts' and (counter[i + 1] in numbers_0_6 or numbers_7_9):
-                                Error = "Слово {} не может использоваться с другими числительными кроме quatre".format(counter[i])
+                                Error = "После слова {} не может стоять ничего (используйте vingt)".format(counter[i])
                                 ErrorCheck = True
                                 break
                         if i + 1 != len(counter):
@@ -337,7 +342,7 @@ def clicked():
                             ErrorCheck = True
                             break
                     if counter[i - 1] in numbers_20_60:
-                        Error = "Два слова1 {} и {} десятичного разряда идут друг за другом".format(counter[i - 1],
+                        Error = "Два слова {} и {} десятичного разряда идут друг за другом".format(counter[i - 1],
                                                                                                     counter[i])
                         ErrorCheck = True
                         break
