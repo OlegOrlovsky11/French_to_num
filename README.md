@@ -1,1 +1,1 @@
-# French_to_num
+translate string form of numbers to int-form (Only French language)
